@@ -1,10 +1,10 @@
-import Navbar from "../../Components/Navbar/Navbar";
+import { Helmet } from "react-helmet-async";
 
 
 const Home = () => {
     return (
         <div>
-            <Navbar></Navbar>
+            <Helmet><title>Task Forge | Home</title></Helmet>
         </div>
     );
 };
