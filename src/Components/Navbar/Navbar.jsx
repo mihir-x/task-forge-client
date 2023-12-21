@@ -13,7 +13,7 @@ const Navbar = () => {
     const handleLogOut = () => {
         logOut()
             .then(() => {
-                Swal.fire("User logged out successfully!")
+                Swal.fire("User logged out!")
             })
             .catch(() => {
                 Swal.fire({
