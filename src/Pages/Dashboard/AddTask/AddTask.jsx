@@ -3,6 +3,9 @@ import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import SectionTitle from "../../../Components/Shared/SectionTitle";
 import Loader from "../../../Components/Shared/Loader";
+// import { toast } from "react-toastify";
+import axiosSecure from "../../../API";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const AddTask = () => {
@@ -14,10 +17,18 @@ const AddTask = () => {
     const onSubmit = async (data) => {
         const taskDate = new Date(data.deadline)
         const taskDueTime = taskDate.getTime()
-        const task = {
+        const taskData = {
             title: data.title, description: data.description, deadline: data.deadline, priority: data.priority, taskDueTime, createdAt: Date.now(), creator: user.email
         }
-        console.log(task)
+        try {
+            const task = await axiosSecure.post('/task', taskData)
+            if (task.data.insertedId) {
+                toast.success('Task successfully added to to-do list')
+                reset()
+            }
+        } catch (err) {
+            toast.error(err.message)
+        }
     }
 
     return (
@@ -59,6 +70,7 @@ const AddTask = () => {
                     </div>
                 </form>
             </div>
+            <Toaster position="top-right"></Toaster>
         </div>
     );
 };
