@@ -1,16 +1,41 @@
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "../../Components/Shared/Container";
 import { FcGoogle } from "react-icons/fc";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 
 const Login = () => {
-    const handleLogin = (e) => {
+
+    const { logIn } = useAuth()
+    const navigate = useNavigate()
+
+    const handleLogin = async(e) => {
         e.preventDefault()
         const form = e.target
         const email = form.email.value
         const password = form.password.value
         console.log(email, password)
+
+        try {
+            const result = await logIn(email, password)
+            navigate('/')
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `Welcome back ${result.user.displayName}`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+        catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: err.message
+            })
+        }
     }
     return (
         <div className="">
@@ -56,7 +81,7 @@ const Login = () => {
                         <div className='mb-8 text-center'>
                             <h1 className='my-3 text-4xl font-bold'>Log In</h1>
                         </div>
-                        <form 
+                        <form onSubmit={handleLogin}
                             className='space-y-6 ng-untouched ng-pristine ng-valid'
                         >
                             <div className='space-y-4'>
@@ -71,7 +96,7 @@ const Login = () => {
                                         required
                                         placeholder='Your Email'
                                         className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-blue-600 bg-gray-200 text-gray-900'
-                                        
+
                                     />
                                 </div>
                                 <div>
@@ -111,7 +136,7 @@ const Login = () => {
                             </p>
                             <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                         </div>
-                        <div  className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+                        <div className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                             <FcGoogle size={32} />
 
                             <p>Continue with Google</p>
