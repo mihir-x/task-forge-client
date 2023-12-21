@@ -1,18 +1,28 @@
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 
 const Navbar = () => {
+    const { user, logOut } = useAuth()
 
     const navLinks = <>
         <li><NavLink to='/' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Home</NavLink></li>
-        {/* {
-            user && <>
-                <NavLink to='/available-camps' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Available Camps</NavLink>
-                <NavLink to='/dashboard' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Dashboard</NavLink>
-            </>
-        } */}
         <li><NavLink to='/dashboard' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Dashboard</NavLink></li>
     </>
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+                Swal.fire("User logged out successfully!")
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!"
+                })
+            })
+    }
 
     return (
         <div className="navbar bg-base-100 shadow-lg">
@@ -33,7 +43,18 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to='/login'><button className=" btn btn-primary">Login</button></Link>
+                {
+                    user ? <div className="flex flex-col md:flex-row items-center gap-1">
+                        <div className="flex items-center gap-1 p-1 border rounded-l-full rounded-r-full">
+                            <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full" />
+                            <h3 className="text-sm md:text-xl font-bold">{user.displayName}</h3>
+                        </div>
+                        <div>
+                            <button onClick={handleLogOut} className="px-2 py-1 rounded-md text-sm font-bold bg-blue-500 text-white">Log Out</button>
+                        </div>
+                    </div>
+                        : <Link to='/login'><button className="btn">Login</button></Link>
+                }
             </div>
         </div>
     );
