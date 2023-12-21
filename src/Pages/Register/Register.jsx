@@ -127,9 +127,6 @@ const Register = () => {
                             type='submit'
                             className='btn btn-primary w-full rounded-md py-3 text-white'
                         >
-                            {/* {
-                                loading ? <TbFidgetSpinner className=' animate-spin m-auto'></TbFidgetSpinner> : 'Continue'
-                            } */}
                             Register
                         </button>
                     </div>
