@@ -64,12 +64,12 @@ const Sidebar = () => {
                     <div className='flex flex-col justify-between flex-1 mt-6'>
 
                         
-                        <NavLink to='/dashboard/home'
+                        <NavLink to='/dashboard/task-management'
                             className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "bg-gray-500 text-white font-bold mb-2 p-2 rounded-md shadow-md border" : "mb-2 border p-2 rounded-md border-black"
                             }
                         >
-                            Dashboard Home 
+                            Task Management
                         </NavLink>
                         <NavLink to='/dashboard/add-task'
                             className={({ isActive, isPending }) =>

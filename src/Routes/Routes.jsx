@@ -9,6 +9,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import AddTask from "../Pages/Dashboard/AddTask/AddTask";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import EditTask from "../Pages/Dashboard/EditTask/EditTask";
+import TaskManagement from "../Pages/Dashboard/TaskManagement/TaskManagement";
 
 export const router = createBrowserRouter([
     {
@@ -35,8 +36,8 @@ export const router = createBrowserRouter([
         element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
         children: [
             {
-                path: 'home',
-                element: <PrivateRoutes><DashboardHome></DashboardHome></PrivateRoutes>
+                path: 'task-management',
+                element: <PrivateRoutes><TaskManagement></TaskManagement></PrivateRoutes>
             },
             {
                 path: 'add-task',
