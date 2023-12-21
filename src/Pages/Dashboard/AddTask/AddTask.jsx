@@ -3,7 +3,6 @@ import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import SectionTitle from "../../../Components/Shared/SectionTitle";
 import Loader from "../../../Components/Shared/Loader";
-// import { toast } from "react-toastify";
 import axiosSecure from "../../../API";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -18,7 +17,7 @@ const AddTask = () => {
         const taskDate = new Date(data.deadline)
         const taskDueTime = taskDate.getTime()
         const taskData = {
-            title: data.title, description: data.description, deadline: data.deadline, priority: data.priority, taskDueTime, createdAt: Date.now(), creator: user.email
+            title: data.title, description: data.description, deadline: data.deadline, priority: data.priority, taskDueTime, createdAt: Date.now(), creator: user.email, ongoing: false, completed: false,
         }
         try {
             const task = await axiosSecure.post('/task', taskData)

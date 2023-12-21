@@ -8,6 +8,7 @@ import Register from "../Pages/Register/Register";
 import PrivateRoutes from "./PrivateRoutes";
 import AddTask from "../Pages/Dashboard/AddTask/AddTask";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import EditTask from "../Pages/Dashboard/EditTask/EditTask";
 
 export const router = createBrowserRouter([
     {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
             {
                 path: 'add-task',
                 element: <PrivateRoutes><AddTask></AddTask></PrivateRoutes>
+            },
+            {
+                path: 'edit/:id',
+                element: <PrivateRoutes><EditTask></EditTask></PrivateRoutes>
             }
         ]
     }
