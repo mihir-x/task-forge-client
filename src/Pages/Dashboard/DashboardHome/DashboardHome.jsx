@@ -64,11 +64,25 @@ const DashboardHome = () => {
     const handleDrop = async (e) => {
         e.preventDefault()
         const taskId = e.dataTransfer.getData('text/plain')
-        
+
         try {
             const res = await axiosSecure.patch(`/task/ongoing/${taskId}`)
             if (res.data.modifiedCount > 0) {
-                toast.success('task added to ongoing')
+                toast.success('task added to ongoing list')
+                refetch()
+            }
+        } catch (err) {
+            toast.error(err.message)
+        }
+    }
+    const handleCompletedDrop = async (e) => {
+        e.preventDefault()
+        const taskId = e.dataTransfer.getData('text/plain')
+
+        try {
+            const res = await axiosSecure.patch(`/task/completed/${taskId}`)
+            if (res.data.modifiedCount > 0) {
+                toast.success('task added to completed list')
                 refetch()
             }
         } catch (err) {
@@ -119,7 +133,7 @@ const DashboardHome = () => {
                 </div>
                 {/* ongoing--------------------------------------------------- */}
                 <div className=" p-5 shadow-lg mt-5 md:mt-16">
-                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Ongoing</h1>
+                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Ongoing Task</h1>
                     <div>
                         <div
                             onDragOver={handleDragOver}
@@ -138,7 +152,11 @@ const DashboardHome = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        tasks?.filter(item => item.ongoing && !item.completed)?.map(task => <tr key={task._id} draggable>
+                                        tasks?.filter(item => item.ongoing && !item.completed)?.map(task => <tr
+                                            key={task._id}
+                                            draggable
+                                            onDragStart={(e) => handleDragStart(e, task._id)}
+                                        >
                                             <th>{task.title}</th>
                                             <td>{task.description}</td>
                                             <td>{task.deadline}</td>
@@ -152,7 +170,41 @@ const DashboardHome = () => {
                         </div>
                     </div>
                 </div>
-                
+                {/* completed------------------------------------------- */}
+                <div className=" p-5 shadow-lg mt-5 md:mt-16">
+                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Completed Task</h1>
+                    <div>
+                        <div
+                            onDragOver={handleDragOver}
+                            onDrop={handleCompletedDrop}
+                            className="overflow-x-auto">
+                            <table className="table">
+                                {/* head */}
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Deadline</th>
+                                        <th>Priority</th>
+                                        {/* <th>Ongoing</th> */}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        tasks?.filter(item => !item.ongoing && item.completed)?.map(task => <tr key={task._id} draggable>
+                                            <th>{task.title}</th>
+                                            <td>{task.description}</td>
+                                            <td>{task.deadline}</td>
+                                            <td>{task.priority}</td>
+                                            {/* <td>{task.ongoing}</td> */}
+                                        </tr>)
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <Toaster position="top-right"></Toaster>
         </div>
