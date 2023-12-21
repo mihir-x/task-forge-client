@@ -11,7 +11,7 @@ const DashboardHome = () => {
     const { user } = useAuth()
 
     const { data: tasks, isLoading } = useQuery({
-        queryKey: ['myCamps', user?.email],
+        queryKey: ['myTask', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/task/${user?.email}`)
             return res.data
