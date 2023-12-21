@@ -6,6 +6,8 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoutes from "./PrivateRoutes";
+import AddTask from "../Pages/Dashboard/AddTask/AddTask";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
     {
@@ -30,5 +32,15 @@ export const router = createBrowserRouter([
     {
         path: 'dashboard',
         element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
+        children: [
+            {
+                path: 'home',
+                element: <PrivateRoutes><DashboardHome></DashboardHome></PrivateRoutes>
+            },
+            {
+                path: 'add-task',
+                element: <PrivateRoutes><AddTask></AddTask></PrivateRoutes>
+            }
+        ]
     }
 ])
