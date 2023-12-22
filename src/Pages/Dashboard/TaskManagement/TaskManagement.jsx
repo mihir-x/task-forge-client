@@ -93,7 +93,7 @@ const TaskManagement = () => {
         <div className=" mt-5">
             <Helmet><title>Dashboard-Home | Task-Forge</title></Helmet>
             <div>
-                <div className=" p-5 shadow-lg">
+                <div className=" p-5 shadow-lg bg-orange-200 rounded-md">
                     <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">To-Do</h1>
                     <div>
                         <div className="overflow-x-auto">
@@ -131,7 +131,7 @@ const TaskManagement = () => {
                     </div>
                 </div>
                 {/* ongoing--------------------------------------------------- */}
-                <div className=" p-5 shadow-lg mt-5 md:mt-16">
+                <div className=" p-5 shadow-lg mt-5 md:mt-16 bg-purple-200 rounded-md">
                     <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Ongoing Task</h1>
                     <div>
                         <div
@@ -170,7 +170,7 @@ const TaskManagement = () => {
                     </div>
                 </div>
                 {/* completed------------------------------------------- */}
-                <div className=" p-5 shadow-lg mt-5 md:mt-16">
+                <div className=" p-5 shadow-lg mt-5 md:mt-16 bg-green-200 rounded-md">
                     <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Completed Task</h1>
                     <div>
                         <div
