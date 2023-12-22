@@ -35,7 +35,7 @@ const Sidebar = () => {
     return (
         <div>
             {/* Small Screen Navbar */}
-            <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
+            <div className='bg-gray-200 text-gray-800 flex justify-between md:hidden'>
                 <div>
                     <div className='block cursor-pointer p-4 font-bold'>
                     <img src={user.photoURL} alt="" className="w-16 h-16 rounded-full" />
@@ -51,7 +51,7 @@ const Sidebar = () => {
             </div>
             {/* Sidebar */}
             <div
-                className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
+                className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-200 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
                     }  md:translate-x-0  transition duration-200 ease-in-out`}
             >
                 <div>
@@ -62,7 +62,7 @@ const Sidebar = () => {
                             <Link to='/dashboard'><button className="btn btn-primary">Dashboard Home</button></Link>
                         </div>
                     </div>
-                    <hr />
+                    <div className="p-[1px] bg-black"></div>
                     {/* Nav Items */}
                     <div className='flex flex-col justify-between flex-1 mt-6'>
 
@@ -86,7 +86,7 @@ const Sidebar = () => {
                 </div>
 
                 <div>
-                    <hr />
+                <div className="p-[1px] bg-black"></div>
                     <div className='flex flex-col justify-between flex-1 mt-6'>
                         
                     <NavLink to='/'
