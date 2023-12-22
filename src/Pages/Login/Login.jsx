@@ -8,10 +8,10 @@ import Swal from "sweetalert2";
 
 const Login = () => {
 
-    const { logIn } = useAuth()
+    const { logIn, googleSignIn } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const from = location?.state?.from?.pathname || '/'
+    const from = location?.state?.from?.pathname || '/dashboard'
 
     const handleLogin = async(e) => {
         e.preventDefault()
@@ -39,6 +39,29 @@ const Login = () => {
             })
         }
     }
+
+    const handleGoogleLogin = () => {
+        googleSignIn()
+            .then(result => {
+                console.log(result)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `Welcome back ${result.user.displayName}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate(from, {replace: true})
+            })
+            .catch(err => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message
+                })
+            })
+    }
+
     return (
         <div className="">
             <Helmet>
@@ -135,7 +158,7 @@ const Login = () => {
                             </p>
                             <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                         </div>
-                        <div className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+                        <div onClick={handleGoogleLogin} className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                             <FcGoogle size={32} />
 
                             <p>Continue with Google</p>

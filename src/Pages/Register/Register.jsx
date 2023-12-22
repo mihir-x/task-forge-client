@@ -1,5 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { uploadImage } from "../../API/utils";
@@ -8,9 +8,11 @@ import Swal from "sweetalert2";
 
 const Register = () => {
 
-    const {createUser, updateUserProfile} = useAuth()
+    const {createUser, updateUserProfile, googleSignIn} = useAuth()
     const axiosPublic = useAxiosPublic()
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = location?.state?.from?.pathname || '/dashboard'
 
     const handleRegistration = async (e) => {
         e.preventDefault()
@@ -43,7 +45,7 @@ const Register = () => {
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        navigate('/')
+                        navigate(from, {replace: true})
                     }
                 })
         }
@@ -55,6 +57,28 @@ const Register = () => {
             })
         }
 
+    }
+
+    const handleGoogleLogin = () => {
+        googleSignIn()
+            .then(result => {
+                console.log(result)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: `Welcome back ${result.user.displayName}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate(from, {replace: true})
+            })
+            .catch(err => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message
+                })
+            })
     }
     
 
@@ -155,7 +179,7 @@ const Register = () => {
                     </p>
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
-                <div className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+                <div onClick={handleGoogleLogin} className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 
                     <p>Continue with Google</p>

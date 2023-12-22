@@ -3,7 +3,7 @@ import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { GrLogout } from 'react-icons/gr'
 import Loader from "../../Shared/Loader";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 
 const Sidebar = () => {
@@ -59,6 +59,7 @@ const Sidebar = () => {
                         <div className='w-full hidden md:flex flex-col px-4 py-2 rounded-lg justify-center items-center mx-auto'>
                             <img src={user.photoURL} alt="" className="w-16 h-16 rounded-full" />
                             <h3 className="text-sm md:text-xl font-bold">{user.displayName}</h3>
+                            <Link to='/dashboard'><button className="btn btn-primary">Dashboard Home</button></Link>
                         </div>
                     </div>
                     <hr />
