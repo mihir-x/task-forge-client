@@ -1,18 +1,16 @@
-import { Helmet } from "react-helmet-async";
-import useAuth from "../../../Hooks/useAuth";
+
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../API";
+import useAuth from "../../../Hooks/useAuth";
 import Loader from "../../../Components/Shared/Loader";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import toast, { Toaster } from "react-hot-toast";
+
 
 
 const DashboardHome = () => {
 
     const { user } = useAuth()
 
-    const { data: tasks, isLoading, refetch } = useQuery({
+    const { data: myTasks, isLoading } = useQuery({
         queryKey: ['myTask', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/task/${user?.email}`)
@@ -20,193 +18,26 @@ const DashboardHome = () => {
         }
     })
     if (isLoading) return <Loader></Loader>
-
-    const handleDelete = async (id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const res = await axiosSecure.delete(`/task/delete/${id}`)
-                    if (res.data.deletedCount > 0) {
-                        refetch()
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Task has been deleted.",
-                            icon: "success"
-                        });
-                    }
-                }
-                catch (err) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: err.message
-                    })
-                }
-
-            }
-        });
-    }
-
-    const handleDragStart = (e, id) => {
-        e.dataTransfer.setData('text/plain', id)
-    }
-    const handleDragOver = e => {
-        e.preventDefault()
-    }
-    const handleDrop = async (e) => {
-        e.preventDefault()
-        const taskId = e.dataTransfer.getData('text/plain')
-
-        try {
-            const res = await axiosSecure.patch(`/task/ongoing/${taskId}`)
-            if (res.data.modifiedCount > 0) {
-                toast.success('task added to ongoing list')
-                refetch()
-            }
-        } catch (err) {
-            toast.error(err.message)
-        }
-    }
-    const handleCompletedDrop = async (e) => {
-        e.preventDefault()
-        const taskId = e.dataTransfer.getData('text/plain')
-
-        try {
-            const res = await axiosSecure.patch(`/task/completed/${taskId}`)
-            if (res.data.modifiedCount > 0) {
-                toast.success('task added to completed list')
-                refetch()
-            }
-        } catch (err) {
-            toast.error(err.message)
-        }
-    }
+    console.log(myTasks)
 
     return (
-        <div className=" mt-5">
-            <Helmet><title>Dashboard-Home | Task-Forge</title></Helmet>
-            <div>
-                <div className=" p-5 shadow-lg">
-                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">To-Do</h1>
-                    <div>
-                        <div className="overflow-x-auto">
-                            <table className="table">
-                                {/* head */}
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Deadline</th>
-                                        <th>Priority</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        tasks?.filter(item => !item.ongoing && !item.completed)?.map(task => <tr
-                                            key={task._id}
-                                            draggable
-                                            onDragStart={(e) => handleDragStart(e, task._id)}
-                                        >
-                                            <th>{task.title}</th>
-                                            <td>{task.description}</td>
-                                            <td>{task.deadline}</td>
-                                            <td>{task.priority}</td>
-                                            <td><Link to={`/dashboard/edit/${task._id}`}><button className="btn btn-primary">Edit</button></Link></td>
-                                            <td><button onClick={() => handleDelete(task._id)} className="btn btn-error">Delete</button></td>
-                                        </tr>)
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {/* ongoing--------------------------------------------------- */}
-                <div className=" p-5 shadow-lg mt-5 md:mt-16">
-                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Ongoing Task</h1>
-                    <div>
-                        <div
-                            onDragOver={handleDragOver}
-                            onDrop={handleDrop}
-                            className="overflow-x-auto">
-                            <table className="table">
-                                {/* head */}
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Deadline</th>
-                                        <th>Priority</th>
-                                        {/* <th>Ongoing</th> */}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        tasks?.filter(item => item.ongoing && !item.completed)?.map(task => <tr
-                                            key={task._id}
-                                            draggable
-                                            onDragStart={(e) => handleDragStart(e, task._id)}
-                                        >
-                                            <th>{task.title}</th>
-                                            <td>{task.description}</td>
-                                            <td>{task.deadline}</td>
-                                            <td>{task.priority}</td>
-                                            {/* <td>{task.ongoing}</td> */}
-                                        </tr>)
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {/* completed------------------------------------------- */}
-                <div className=" p-5 shadow-lg mt-5 md:mt-16">
-                    <h1 className=" text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">Completed Task</h1>
-                    <div>
-                        <div
-                            onDragOver={handleDragOver}
-                            onDrop={handleCompletedDrop}
-                            className="overflow-x-auto">
-                            <table className="table">
-                                {/* head */}
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Deadline</th>
-                                        <th>Priority</th>
-                                        {/* <th>Ongoing</th> */}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        tasks?.filter(item => !item.ongoing && item.completed)?.map(task => <tr key={task._id} draggable>
-                                            <th>{task.title}</th>
-                                            <td>{task.description}</td>
-                                            <td>{task.deadline}</td>
-                                            <td>{task.priority}</td>
-                                            {/* <td>{task.ongoing}</td> */}
-                                        </tr>)
-                                    }
-
-                                </tbody>
-                            </table>
-                        </div>
+        <div className="">
+            <div className="max-w-2xl mx-auto bg-base-200 rounded-2xl shadow-2xl py-5 md:py-32">
+                <div className="flex flex-col items-center pb-10 space-y-3 md:space-y-5">
+                    <img
+                        alt="Bonnie image"
+                        src={user?.photoURL}
+                        className="mb-3 h-36 w-36 rounded-full shadow-lg object-cover"
+                    />
+                    <h5 className="mb-1 text-xl font-medium text-gray-900">{user?.displayName}</h5>
+                    <span className="text-sm md:text-base text-gray-500"><span className="text-gray-800 font-bold">Email:</span> {user?.email}</span>
+                    <div className=" flex flex-col md:flex-row gap-5">
+                        <span className="text-sm md:text-base text-gray-500 dark:text-gray-400"><span className="text-gray-800 font-bold">Number of Added Task:</span> {myTasks.length}</span>
+                        <span className="text-sm md:text-base text-gray-500 dark:text-gray-400"><span className="text-gray-800 font-bold">Ongoing Task:</span> {myTasks.filter(item => item.ongoing).length}</span>
+                        <span className="text-sm md:text-base text-gray-500 dark:text-gray-400"><span className="text-gray-800 font-bold">Completed Task:</span> {myTasks.filter(item => item.completed).length}</span>
                     </div>
                 </div>
             </div>
-            <Toaster position="top-right"></Toaster>
         </div>
     );
 };

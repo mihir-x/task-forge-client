@@ -18,6 +18,7 @@ const Register = () => {
         const name = form.name.value
         const email = form.email.value
         const password = form.password.value
+        const profession = form.profession.value
         const image = form.image.files[0]
 
         console.log(name, email, password, image)
@@ -30,6 +31,7 @@ const Register = () => {
                 name: name,
                 email: email,
                 photo: imageData?.data?.display_url,
+                profession: profession,
             }
             axiosPublic.post('/users', userInfo)
                 .then(res => {
@@ -54,6 +56,7 @@ const Register = () => {
         }
 
     }
+    
 
     return (
         <div className='flex justify-center items-center min-h-screen'>
@@ -100,6 +103,20 @@ const Register = () => {
                                 id='email'
                                 required
                                 placeholder='Your Email'
+                                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-blue-600 bg-gray-200 text-gray-900'
+
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor='profession' className='block mb-2 text-sm'>
+                                Your Profession
+                            </label>
+                            <input
+                                type='profession'
+                                name='profession'
+                                id='profession'
+                                required
+                                placeholder='Your Profession'
                                 className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-blue-600 bg-gray-200 text-gray-900'
 
                             />

@@ -10,6 +10,7 @@ import AddTask from "../Pages/Dashboard/AddTask/AddTask";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import EditTask from "../Pages/Dashboard/EditTask/EditTask";
 import TaskManagement from "../Pages/Dashboard/TaskManagement/TaskManagement";
+import AboutUs from "../Pages/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element:<Home></Home>
+            },
+            {
+                path: '/about-us',
+                element: <AboutUs></AboutUs>
             },
             {
                 path: '/login',
@@ -35,6 +40,10 @@ export const router = createBrowserRouter([
         path: 'dashboard',
         element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
         children: [
+            {
+                index: true,
+                element: <PrivateRoutes><DashboardHome></DashboardHome></PrivateRoutes>
+            },
             {
                 path: 'task-management',
                 element: <PrivateRoutes><TaskManagement></TaskManagement></PrivateRoutes>

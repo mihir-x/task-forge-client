@@ -3,12 +3,13 @@ import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { GrLogout } from 'react-icons/gr'
 import Loader from "../../Shared/Loader";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
 const Sidebar = () => {
     const { user, logOut, loading } = useAuth()
     const [isActive, setActive] = useState(false)
+    const navigate = useNavigate()
 
     if (loading) return <Loader></Loader>
 
@@ -20,6 +21,7 @@ const Sidebar = () => {
         logOut()
             .then(() => {
                 Swal.fire("User logged out!")
+                navigate('/')
             })
             .catch(() => {
                 Swal.fire({

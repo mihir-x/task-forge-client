@@ -1,19 +1,22 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
 
 const Navbar = () => {
     const { user, logOut } = useAuth()
+    const navigate = useNavigate()
 
     const navLinks = <>
         <li><NavLink to='/' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Home</NavLink></li>
         <li><NavLink to='/dashboard' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>Dashboard</NavLink></li>
+        <li><NavLink to='/about-us' className={({ isActive }) => isActive ? ' font-bold underline text-green-500 ' : ''}>About Us</NavLink></li>
     </>
     const handleLogOut = () => {
         logOut()
             .then(() => {
                 Swal.fire("User logged out!")
+                navigate('/')
             })
             .catch(() => {
                 Swal.fire({

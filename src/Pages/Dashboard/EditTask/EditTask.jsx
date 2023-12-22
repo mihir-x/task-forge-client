@@ -44,7 +44,7 @@ const EditTask = () => {
                     showConfirmButton: false,
                     timer: 1500
                   });
-                  navigate('/dashboard/home')
+                  navigate('/dashboard/task-management')
             }
         } catch (err) {
             toast.error(err.message)
